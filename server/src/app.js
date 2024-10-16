@@ -2,20 +2,26 @@ const express = require('express')
 const app = express();
 const port =8000;
 
-
-
-app.get('/dashboard',(req,res)=>{
-    res.send('<h1>Hello from the Dev-Tinder Dashboard</h1>')
+//this will match all get method to /user
+app.get("/user",(req,res)=>{
+    res.send({
+        firstName:"Shailesh",
+        lastName:"Mallick",
+        city:"Bangalore",
+        phone:39393030
+    })
 })
 
-app.get('/',(req,res)=>{
-    res.end("<h1>Hello fron the Dev-Tinder Homepage</h1>")
+//POST REQUESTS
+app.post("/user",(req,res)=>{
+    console.log("Saved Data to the database");
+    res.send("Data successfully saved to the database")
 })
 
-app.use((req,res)=>{
-    res.send('Hello from the server')
+//DELETE REQUESTS
+app.delete("/user",(req,res)=>{
+    res.send("Data got deleted...")
 })
-
 
 app.listen(port,()=>{
     console.log(`Dev-Tinder server is running on ${port}`)
