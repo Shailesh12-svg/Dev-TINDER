@@ -23,6 +23,26 @@ app.delete("/user",(req,res)=>{
     res.send("Data got deleted...")
 })
 
+
+app.use("/user1",[(req,res,next)=>{
+    // res.send(`Handling the route user 1`)
+    next();
+    // res.send("Hello")
+},
+    (req,res)=>{
+        console.log("2nd Route handler")
+        res.send('confused')
+    },
+    (req,res)=>{
+        console.log("3rd Route handler")
+        res.send('confused yr ')
+    },
+    (req,res)=>{
+        console.log("4th Route handler")
+        res.send('confused hun')
+    }]
+);
+
 app.listen(port,()=>{
     console.log(`Dev-Tinder server is running on ${port}`)
 })
