@@ -11,9 +11,11 @@ app.use('/admin',adminAuth)
 
 
 
+
 //User
 app.get('/user',userAuth,(req,res)=>{
-    res.send("Fetched user data successfully")
+    // res.send("Fetched user data successfully")
+    throw new Error("sdsdshdbsbdsaj");
 })
 
 app.post('/user/login',(req,res)=>{
@@ -69,6 +71,16 @@ app.get("/user1",(req,res)=>{
     res.send("Hello1234")
 })
 );
+
+
+//Error handling
+
+app.use('/',(err,req,res,next)=>{
+    if(err){
+        //Log the errors for ourselves..
+        res.status(500).send("Something went wrong Please try again later....")
+    }
+})
 
 app.listen(port,()=>{
     console.log(`Dev-Tinder server is running on ${port}`)
