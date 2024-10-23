@@ -1,6 +1,42 @@
 const express = require('express')
 const app = express();
 const port =8000;
+const {adminAuth, userAuth} = require('./middlewares/auth')
+
+// app.use('/',(req,res)=>{
+//     res.send("It would handle all the requests")
+// })
+
+app.use('/admin',adminAuth)
+
+
+
+//User
+app.get('/user',userAuth,(req,res)=>{
+    res.send("Fetched user data successfully")
+})
+
+app.post('/user/login',(req,res)=>{
+    res.send("User login successfully")
+})
+
+
+
+app.get("/admin/getAllData",(req,res)=>{
+    res.send("All Data Sent...")  
+})
+
+app.get("/admin/deleteUser",(req,res)=>{
+    //Logic of fetching all data
+    res.send("Deleted a User...")
+})
+
+
+
+
+
+
+
 
 //this will match all get method to /user
 app.get("/user",(req,res)=>{
@@ -24,23 +60,14 @@ app.delete("/user",(req,res)=>{
 })
 
 
-app.use("/user1",[(req,res,next)=>{
+app.get("/user1",(req,res,next)=>{
     // res.send(`Handling the route user 1`)
     next();
     // res.send("Hello")
 },
-    (req,res)=>{
-        console.log("2nd Route handler")
-        res.send('confused')
-    },
-    (req,res)=>{
-        console.log("3rd Route handler")
-        res.send('confused yr ')
-    },
-    (req,res)=>{
-        console.log("4th Route handler")
-        res.send('confused hun')
-    }]
+app.get("/user1",(req,res)=>{
+    res.send("Hello1234")
+})
 );
 
 app.listen(port,()=>{

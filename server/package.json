@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Backend Server for Dev -Tinder",
   "main": "app.js",
+  
   "scripts": {
     "start":"nodemon src/app.js",
     "dev":"node src/app.js"
