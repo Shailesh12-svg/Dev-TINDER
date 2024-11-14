@@ -20,3 +20,9 @@ const userSchema =  new mongoose.Schema({
         type:Number
     }
 })
+
+//Creating  a user model
+
+const UserModel = mongoose.model("User",userSchema)
+
+module.exports = UserModel;
