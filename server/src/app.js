@@ -40,8 +40,41 @@ app.post('/signup',async(req,res)=>{
     // }catch(err){
     //     res.status(400).send("Error adding data to the database"+err.message)
     //  }
-    })
+    }) 
 
+//get api :- /feed :- get all the users from the database
+
+//Get user by email
+app.get('/user',async(req,res)=>{
+    const userEmail = req.body.emailId;
+    try{
+        const user = await UserModel.find({emailId:userEmail})
+        //Check
+        if(user.length===0){
+            res.send("User not found")
+        }else{
+            res.send(user)
+        }
+        
+
+    }catch(err){
+        res.status(400).send("Something went wrong"+err.message)
+    }
+})
+
+
+
+
+app.get('/feed',async(req,res)=>{
+
+    try{
+        const users=await UserModel.find({});
+
+        res.send(users)
+    }catch(err){
+        res.status(400).send("Something went wrong")
+    }
+})
 
 
 
