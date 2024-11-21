@@ -65,6 +65,7 @@ app.get('/user',async(req,res)=>{
 
 
 
+
 app.get('/feed',async(req,res)=>{
 
     try{
@@ -75,6 +76,56 @@ app.get('/feed',async(req,res)=>{
         res.status(400).send("Something went wrong")
     }
 })
+
+
+//API
+
+app.get('/userId',async(req,res)=>{
+    const userId = await UserModel.findById({id:'id'})
+
+    if(userId){
+        res.send(userId)
+    }else{
+        res.send("User not found")
+    }
+})
+
+
+//Delete API
+
+app.delete("/user",async(req,res)=>{
+   const userId = req.body.userId;
+   try{
+    
+    await UserModel.findByIdAndDelete(userId)
+
+    res.send("User deleted sucessfully")
+
+
+   }catch(err){
+    res.status(400).send("Something went wrong")
+   } 
+})
+
+//Update the Data 
+
+app.patch("/user",async(req,res)=>{
+    const userData = req.body;
+    const userId = req.body.userId;
+    try{
+         
+        const user =await UserModel.findByIdAndUpdate({_id:userId},userData,{
+            returnDocument:"before"
+        });
+        console.log(user)
+        res.send("User updated successfully")
+
+    }catch(err){
+        res.status(400).send("Something went wrong")
+    }
+})
+
+
 
 
 
