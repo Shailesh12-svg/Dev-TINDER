@@ -17,7 +17,7 @@ app.post('/signup',async(req,res)=>{
     res.send("User Added successfully in our database")
     }
     catch(err){
-        res.status(400).send("Error in adding user to the database")
+        res.status(400).send("Error in adding user to the database"+err.message)
     }
 
 
