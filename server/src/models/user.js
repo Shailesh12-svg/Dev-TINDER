@@ -1,3 +1,4 @@
+const { kMaxLength } = require('buffer');
 const mongoose = require('mongoose')
 
 const userSchema =  new mongoose.Schema({
@@ -5,6 +6,7 @@ const userSchema =  new mongoose.Schema({
         type:String,
         required:true,
         minLength:4,
+        maxLength:50,
     },
     lastName:{
         type:String
@@ -20,6 +22,7 @@ const userSchema =  new mongoose.Schema({
     password:{
         type:String,
         required:true,
+        min:9,
     },
     gender:{
         type:String,
@@ -44,6 +47,7 @@ const userSchema =  new mongoose.Schema({
     },
     skills:{
         type:[String],
+        
         
     }
 },{
