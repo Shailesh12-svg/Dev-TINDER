@@ -5,6 +5,7 @@ const connectDB =require("./config/database")
 const UserModel = require('./models/user')
 const {validateSignUp} = require('./utils/validation')
 const bcrypt = require('bcrypt')
+const validator = require('validator')
 app.use(express.json()); //for parsing the JSON OBJECTS
 
 //API
@@ -155,6 +156,32 @@ app.patch("/user",async(req,res)=>{
     }
 })
 
+//Login API
+
+app.post("/login",async(req,res)=>{
+    const {emailId,password}= req.body;
+
+    //Validate the emailId
+    if(!validator.isEmail(emailId)){
+        throw new Error("Invalid Credentials")
+    }
+
+    const user = await UserModel.findOne({emailId:emailId});
+
+    if(!user){
+        throw new Error("Invalid Credentials")
+    }
+        const isPasswordValid = await bcrypt.compare(password,user.password)
+
+        if(isPasswordValid){
+            res.send("Login Successfull")
+        }
+        else{
+            throw new Error("Invalid credentials")
+        }
+    }
+
+)
 
 
 
