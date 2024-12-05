@@ -3,15 +3,32 @@ const app = express();
 const port =8000;
 const connectDB =require("./config/database")
 const UserModel = require('./models/user')
-
-
+const {validateSignUp} = require('./utils/validation')
+const bcrypt = require('bcrypt')
 app.use(express.json()); //for parsing the JSON OBJECTS
 
 //API
 app.post('/signup',async(req,res)=>{
 
-    const user = new UserModel(req.body)
     try{
+
+        //Validate your requests
+        validateSignUp(req);
+
+        //Encrypt your password 
+
+        const {firstName,lastName,emailId,password}= req.body;
+
+        const passwordHash = await bcrypt.hash(password,10)
+
+        const user = new UserModel({
+            firstName,
+            lastName,
+            emailId,
+            password:passwordHash
+        })
+
+
     await user.save()
 
     res.send("User Added successfully in our database")
