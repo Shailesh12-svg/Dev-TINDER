@@ -115,7 +115,8 @@ app.patch("/user",async(req,res)=>{
     try{
          
         const user =await UserModel.findByIdAndUpdate({_id:userId},userData,{
-            returnDocument:"before"
+            returnDocument:"before",
+            runValidators:true,
         });
         console.log(user)
         res.send("User updated successfully")

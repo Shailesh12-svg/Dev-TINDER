@@ -4,6 +4,7 @@ const userSchema =  new mongoose.Schema({
     firstName:{
         type:String,
         required:true,
+        minLength:4,
     },
     lastName:{
         type:String
@@ -13,16 +14,25 @@ const userSchema =  new mongoose.Schema({
         type:String,
         required:true,
         unique:true,
+        lowercase:true,
+        trim:true,
     },
     password:{
         type:String,
         required:true,
     },
     gender:{
-        type:String
+        type:String,
+        validate(value){
+            if(!["male","female","others"].includes(value)){
+                throw new Error("Gender data is not valid!..")
+            }
+        }
     },
     age:{
-        type:Number
+        type:Number,
+        min:18,
+        
     },
     photoUrl:{
         type:String,
@@ -30,12 +40,14 @@ const userSchema =  new mongoose.Schema({
     },
     about:{
         type:String,
-        default:"This is a default about of the user "
+        default:"This is a default about of the  user "
     },
     skills:{
         type:[String],
         
     }
+},{
+    timestamps:true
 })
 
 //Creating  a user model
