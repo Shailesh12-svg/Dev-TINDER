@@ -6,7 +6,14 @@ const UserModel = require('./models/user')
 const {validateSignUp} = require('./utils/validation')
 const bcrypt = require('bcrypt')
 const validator = require('validator')
+const cookieParser = require('cookie-parser')
+const jwt = require('jsonwebtoken')
+//Middlewares
 app.use(express.json()); //for parsing the JSON OBJECTS
+app.use(cookieParser());
+
+
+
 
 //API
 app.post('/signup',async(req,res)=>{
@@ -174,6 +181,15 @@ app.post("/login",async(req,res)=>{
         const isPasswordValid = await bcrypt.compare(password,user.password)
 
         if(isPasswordValid){
+            //Logic
+
+            //Create a JWT Token
+            const token = await jwt.sign({_id:user._id},"DEV@TINDER$597")
+            console.log(token)
+
+            //Add the token to cookie & SEND THE RESPONSE BACK TO THE USER
+
+            res.cookie("token",token);
             res.send("Login Successfull")
         }
         else{
@@ -183,6 +199,17 @@ app.post("/login",async(req,res)=>{
 
 )
 
+//PROFILE API
+app.post('/profile',async(req,res)=>{
+
+    //Reading a cookie 
+    const {token}=req.cookies;
+    const DecodedMessage = await jwt.verify(token,"DEV@TINDER$597")
+
+    console.log(DecodedMessage)
+    const {_id}= DecodedMessage;
+    res.send("The user which is logged in is : "+_id)
+})
 
 
 
