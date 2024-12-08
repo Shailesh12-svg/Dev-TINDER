@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 const validator = require('validator')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
+const {userAuth} = require("./middlewares/auth")
 //Middlewares
 app.use(express.json()); //for parsing the JSON OBJECTS
 app.use(cookieParser());
@@ -200,15 +201,17 @@ app.post("/login",async(req,res)=>{
 )
 
 //PROFILE API
-app.post('/profile',async(req,res)=>{
-
-    //Reading a cookie 
-    const {token}=req.cookies;
-    const DecodedMessage = await jwt.verify(token,"DEV@TINDER$597")
-
-    console.log(DecodedMessage)
-    const {_id}= DecodedMessage;
-    res.send("The user which is logged in is : "+_id)
+app.post('/profile',userAuth,async(req,res)=>{
+    try{
+    const user= req.user;
+    if(!user){
+        throw new Error("User not found")
+    }
+    res.send("The user which is logged in is : "+user)
+    }
+    catch(err){
+        res.status(400).send("Something went wrong.."+err.message)
+    }
 })
 
 
