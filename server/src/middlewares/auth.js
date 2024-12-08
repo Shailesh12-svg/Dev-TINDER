@@ -1,39 +1,38 @@
 const jwt = require('jsonwebtoken');
-const UserModel = require("../models/user")
-//User Auth
-
-const userAuth =async(req,res,next)=>{
+const UserModel = require('../models/user')
+const userAuth = async (req,res,next)=>{
     try{
-   //1:- Read the token
-    const cookies =  req.cookies;
-    const {token} = cookies;
+    //1}Read the token
+
+    const cookies= req.cookies;
+
+    const{token}=cookies;
 
     if(!token){
-        throw new Error("Hey token not present")
+        throw new Error("Token not found")
     }
 
-   //2:- Validate it ...
+    //2}Validate the token
 
     const decodedMessage = await jwt.verify(token,"DEV@TINDER$597");
-
     const {_id}= decodedMessage;
-   //3 Find the user 
+    //3}User find out
+    const user = await UserModel.findById(_id);
 
-   const user = await UserModel.findById(_id);
+    if(!user){
+        throw new Error("Invalid User")
+    }else{
+        req.user = user;
+        next();
 
-   if(!user){
-    throw new Error("User not exist")
-   }
-   else{
-    req.user=user;
-    next();
-   }
- }
- catch(error){
-    res.status(400).send("Something went wrong...")
- }
+    }
+}
+catch(err){
+    res.status(400).send("Oops something went wrong...")
+}
 }
 
-module.exports ={
+
+module.exports={
     userAuth
 }

@@ -185,12 +185,15 @@ app.post("/login",async(req,res)=>{
             //Logic
 
             //Create a JWT Token
-            const token = await jwt.sign({_id:user._id},"DEV@TINDER$597")
-            console.log(token)
+            //expiresIn for setting expiry time of that token
+            const token = await jwt.sign({_id:user._id},"DEV@TINDER$597",{exipresIn:'1h'})
+            
 
-            //Add the token to cookie & SEND THE RESPONSE BACK TO THE USER
+            //Add the token to cookie & SEND THE RESPONSE BACK TO THE USER 
 
-            res.cookie("token",token);
+            //telling that cookie will expire in 8hours... expires
+
+            res.cookie("token",token,{expires:new Date(Date.now()+8*3600000)});
             res.send("Login Successfull")
         }
         else{
@@ -213,6 +216,26 @@ app.post('/profile',userAuth,async(req,res)=>{
         res.status(400).send("Something went wrong.."+err.message)
     }
 })
+
+//CONNECTION REQUEST API {Protected using userAuth}
+
+app.post("/connectionRequest",userAuth,async(req,res)=>{
+
+const user = req.user;
+console.log("Sending a connection request")
+
+
+res.send(user.firstName+ ": Send the connection request ")
+
+})
+
+
+
+
+
+
+
+
 
 
 
