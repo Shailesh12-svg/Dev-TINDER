@@ -20,6 +20,35 @@ const validateSignUp =(req)=>{
     }
 }
 
+const validateEditProfile =(req)=>{
+    const allowedMethods =[
+        'firstName',
+        'lastName',
+        'photoUrl',
+        'gender',
+        'age',
+        'about',
+        'skills'
+    ]
+
+    const isEditAllowed = Object.keys(req.body).every(field=>allowedMethods.includes(field)) 
+
+    return isEditAllowed;
+}
+
+const validateInputPassword=(req)=>{
+    const ValidMethods = 'password';
+ 
+    if(Object.keys(req.body)==ValidMethods){
+        return true
+    }else{
+        throw new Error("Please enter valid inputs")
+    }
+
+}
+
 module.exports ={
-    validateSignUp
+    validateSignUp,
+    validateEditProfile,
+    validateInputPassword,
 }
