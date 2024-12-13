@@ -28,4 +28,30 @@ userRouter.get('/user/requests/received',userAuth,async (req,res)=>{
  }
 })
 
+userRouter.get('/user/connections',userAuth,async(req,res)=>{
+    try{
+    const loggedInUser =req.user;
+
+    const connectionRequest = await ConnectionRequest.find({
+        $or:[
+            {fromUserId:loggedInUser,status:"accepted"},
+            {toUserId:loggedInUser,status:"accepted"}
+        ]
+    }).populate("fromUserId",["firstName","lastName","photoUrl","age","gender","about"])
+
+    const data =connectionRequest.map((row)=>{
+        if(row.fromUserId._id.toString()===loggedInUser._id.toString()){
+            return row.toUserId;
+        }else{
+            return row.fromUserId;
+        }
+    })
+
+    res.json({data})
+}catch(err){
+    res.status(400).json({message:"Oops no connections found"})
+}
+    
+})
+
 module.exports = userRouter;
