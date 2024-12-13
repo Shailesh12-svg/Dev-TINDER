@@ -25,16 +25,13 @@ const userSchema =  new mongoose.Schema({
 
         //Custom Validator
 
-        // validate(value){
-        //    if(!validator.isEmail(value)){
-        //     throw new Error("Invalid email address"+value)
-        //    }
-        // }
-
-        enum:{
-            values:["male","others","female"],
-            message:`{VALUES} is not correct gender type`
+        validate(value){
+           if(!validator.isEmail(value)){
+            throw new Error("Invalid email address"+value)
+           }
         }
+
+        
     },
     password:{
         type:String,
@@ -48,10 +45,14 @@ const userSchema =  new mongoose.Schema({
     },
     gender:{
         type:String,
-        validate(value){
-            if(!["male","female","others"].includes(value)){
-                throw new Error("Gender data is not valid!..")
-            }
+        // validate(value){
+        //     if(!["male","female","others"].includes(value)){
+        //         throw new Error("Gender data is not valid!..")
+        //     }
+        // }
+        enum:{
+            values:["male","others","female"],
+            message:`{VALUES} is not correct gender type`
         }
     },
     age:{
@@ -87,15 +88,11 @@ userSchema.methods.getJWT = async  function (){
 
 }
 
-userSchema.methods.validatePassword =async function (passwordInputByUser){
-    const user = this;
+userSchema.methods.validatePassword = async function (password) {
+    const isPasswordValid = await bcrypt.compare(password, this.password);
 
-    const passwordHash = user.password;
-
-    const isPasswordValid = await bcrypt.compare(passwordInputByUser,passwordHash);
-    
     return isPasswordValid;
-}
+};
 
 
 

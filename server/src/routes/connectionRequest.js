@@ -1,8 +1,10 @@
 const express = require('express')
 const {userAuth} = require("../middlewares/auth");
 const connectionRequestRouter = express.Router();
-const ConnectionRequest = require('../models/connectionRequest')
-const UserModel = require('../models/user')
+const mongoose = require('mongoose')
+const UserModel = require('../models/user');
+const { Connection } = require('mongoose');
+const ConnectionRequest = require('../models/connectionRequest');
 //CONNECTION REQUEST API {Protected using userAuth}
 
 connectionRequestRouter.post("/request/send/:status/:toUserId",userAuth,async(req,res)=>{
@@ -72,5 +74,35 @@ connectionRequestRouter.post("/request/send/:status/:toUserId",userAuth,async(re
     }
 
     })
+
+connectionRequestRouter.post("/request/review/:status/:requestId",userAuth,async(req,res)=>{
+    //Validate status
+    const {status,requestId} = req.params;
+    const allowedMethods = ['accepted','rejected'];
+    const user = req.user;
+    //Validate the status 
+    if(!allowedMethods.includes(status)){
+        res.status(400).json({message:"Invalid status methods ...."})
+    }
+
+    //Imp
+    console.log(user);
+    const connectionRequest = await ConnectionRequest.findOne({
+        _id:requestId,
+        toUserId:user._id,
+        status:'interested',
+    })
+    console.log(connectionRequest)
+
+    if(!connectionRequest){
+        return res.status(404).json({message:'Connection request not found'})
+    }
+    connectionRequest.status = status;
+
+    const data = await connectionRequest.save()
+
+     return res.json({message:"Connection request"+status,data})
+
+})
 
 module.exports=connectionRequestRouter;
