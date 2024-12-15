@@ -1,22 +1,29 @@
 import { useState } from "react"
 import axios from 'axios'
+import {useDispatch} from 'react-redux'
+import { addUser } from "../../utils/userSlice"
+
+
 const Login = () => {
 
   //React hooks state variable
 
   const[emailId,setEmailId] =useState('');
   const[password,setPassword]=useState('');
-  
+  const dispatch = useDispatch();
 //Handle login requests
 
 const handleLogin =async()=>{
   try{
   const res = await axios.post("http://localhost:8000/login",{
     emailId,
-    password
+    password,
+    
   },{
     withCredentials:true
   })
+  dispatch(addUser(res.data))
+  console.log(res.data)
   }catch(err){
     console.log("Invalid Credentials",err.message)
   }

@@ -5,6 +5,8 @@ import Login from './components/body/Login'
 import SignUp from './components/body/SignUp'
 import Connections from './components/body/Connections'
 import Profile from './components/body/profile'
+import appStore from './utils/appStore'
+import { Provider } from 'react-redux';
 
 function App() {
 
@@ -12,6 +14,7 @@ function App() {
     <>
       <h1 className='text-3xl text-center'>Hello Welcome to Dev-Tinder</h1>
       {/* Routing  */}
+      <Provider store ={appStore}>
       <BrowserRouter basename='/'>
       <Routes>
         <Route path='/' element={<Body/>}>
@@ -23,7 +26,7 @@ function App() {
         </Route>
       </Routes>
       </BrowserRouter>
-      
+      </Provider>
 
     </>
   )
