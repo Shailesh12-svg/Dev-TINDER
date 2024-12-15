@@ -87,7 +87,7 @@ authRouter.post("/login",async(req,res)=>{
                 //telling that cookie will expire in 8hours... expires
     
                 res.cookie("token",token,{expires:new Date(Date.now()+8*3600000)});
-                res.send("Login Successfull")
+                res.send(user)
             }
             else{
                 res.status(400).send("Error")
