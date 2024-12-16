@@ -7,14 +7,14 @@ const bcrypt = require('bcrypt')
 
 
 //PROFILE API
-profileRouter.post('/profile',userAuth,async(req,res)=>{
+profileRouter.get('/profile',userAuth,async(req,res)=>{
     try{
     const user= req.user;
     
     if(!user){
         throw new Error("User not found")
     }
-    res.send("The user which is logged in is : "+user)
+    res.json(user)
     }
     catch(err){
         res.status(400).send("Something went wrong.."+err.message)

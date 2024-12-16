@@ -11,8 +11,9 @@ const userRouter = require('./routes/user')
 //Middlewares
 app.use(express.json()); //for parsing the JSON OBJECTS
 
+
 app.use(cors({
-    origin: "http://localhost:5173", // Frontend URL
+    origin: "http://localhost:5173/", // Frontend URL
     credentials: true, // Allow cookies and credentials
 }));
 app.use(cookieParser());
