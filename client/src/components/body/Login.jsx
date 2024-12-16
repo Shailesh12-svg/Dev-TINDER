@@ -36,10 +36,6 @@ const handleLogin =async()=>{
 
 }
 
-
-
-
-
   return (
     <div className="flex justify-center my-10">
     <div className="card bg-accent-400 w-96 shadow-xl">
