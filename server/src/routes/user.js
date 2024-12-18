@@ -38,6 +38,7 @@ userRouter.get('/user/connections',userAuth,async(req,res)=>{
             {toUserId:loggedInUser,status:"accepted"}
         ]
     }).populate("fromUserId",["firstName","lastName","photoUrl","age","gender","about"])
+      .populate("toUserId",["firstName","lastName","photoUrl","age","gender","about"])
 
     const data =connectionRequest.map((row)=>{
         if(row.fromUserId._id.toString()===loggedInUser._id.toString()){
@@ -47,7 +48,10 @@ userRouter.get('/user/connections',userAuth,async(req,res)=>{
         }
     })
 
-    res.json({data})
+    res.status(200).json({
+        message: "Connected users:",
+        data: data,
+    });
 }catch(err){
     res.status(400).json({message:"Oops no connections found"})
 }
