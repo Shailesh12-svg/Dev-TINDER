@@ -12,6 +12,7 @@ const EditProfile = ({user}) => {
     const[gender,setGender]=useState(user.gender||"");
     const[about,setAbout]=useState(user.about||"");
     const[photoUrl,setPhotoUrl]=useState(user.photoUrl||"");
+    const[showToast,setShowToast]=useState(false)
     const dispatch=useDispatch();
     const handleUpdateProfile =async()=>{
         
@@ -28,6 +29,11 @@ const EditProfile = ({user}) => {
 
             })
             dispatch(addUser(response?.data?.user))
+            //Notification
+            setShowToast(true);
+            setTimeout(()=>{
+                setShowToast(false)
+            },3000)
         }catch(err){
             console.log(err.message)
         }
@@ -37,6 +43,7 @@ const EditProfile = ({user}) => {
 
 
   return (
+    <>
     <div className='flex justify-center my-10'>
     <div className="flex justify-center mx-10">
     <div className="card bg-accent-400 w-96 shadow-xl">
@@ -121,6 +128,13 @@ const EditProfile = ({user}) => {
 </div>
 <UserCard user={{firstName,lastName,photoUrl,age,gender,about}}/>
 </div>
+{showToast&&(<div className="toast toast-top toast-center">
+  <div className="alert alert-success">
+    <span>Profile Updated successfully.</span>
+  </div>
+</div>
+)}
+</>
   )
   
 }
