@@ -40,10 +40,10 @@ useEffect(()=>{
       <h1 className="text-bold text-2xl">Connections</h1>
 
     {connections.map((connection)=>{
-      const{firstName,lastName,photoUrl,age,gender,about} =connection;
+      const{firstName,lastName,photoUrl,age,gender,about,_id} =connection;
     
       return(
-        <div className="flex items-center gap-4 p-4 m-4 bg-[#F5EDE2] shadow-md rounded-lg">
+        <div key={_id}className="flex items-center gap-4 p-4 m-4 bg-[#F5EDE2] shadow-md rounded-lg">
     
           <div>
           <img alt ="photo" className ='w-20 h-20 rounded-full ' src={photoUrl}/>
