@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { BASE_URL } from '../../utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { addRequests } from '../../utils/requestSlice'
-import requests from '../../utils/requestSlice'
 const Requests = () => {
     const requests =useSelector(store=>store.requests);
     const dispatch =useDispatch();
@@ -13,9 +12,17 @@ const Requests = () => {
         const res = await axios.get(BASE_URL+"/user/requests/received",{
             withCredentials:true
         })
-        console.log(res.data.connectionRequest);
         dispatch(addRequests(res.data.connectionRequest))
     }
+
+    const handleAccept = async()=>{
+
+        const user = await axios.get(BASE_URL+"/user/requests/received",{
+            withCredentials:true
+        })
+        console.log(user)
+    }
+    
     useEffect(()=>{
         getRequest();
     },[])
@@ -47,7 +54,7 @@ if(!requests)return;
            {age&& <p>{age + " "+gender}</p>}
             </div>
             <div className="card-actions justify-end">
-      <button className="btn btn-primary">Accept</button>
+      <button onClick={() => handleAccept()} className="btn btn-primary">Accept</button>
       <button className="btn btn-secondary">Reject</button>
     </div>
           </div>
