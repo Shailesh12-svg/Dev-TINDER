@@ -9,15 +9,19 @@ import UserCard from "./UserCard";
 const Feed = () => {
   const dispatch = useDispatch();
   const feed =useSelector((store)=>store.feed)
+  const loggedInUser = useSelector((store) => store.user); 
   const getFeed = async()=>{
-  if(feed)return;
+    if (feed && feed.length > 0) return;
     try{
-
       const res = await axios.get(BASE_URL+"/user/feed",{withCredentials:true,})
-      dispatch(addFeed(res.data))
+      let filteredFeed = res.data;
+      if (loggedInUser?._id) {
+        filteredFeed = filteredFeed.filter((user) => user._id !== loggedInUser._id);
+      }
+      dispatch(addFeed(filteredFeed));
       
     }catch(err){
-      return res.status(400).json({message:"Oops something went wrong.."})
+      console.log(err.message)
     }
   }
 
@@ -25,7 +29,8 @@ const Feed = () => {
     getFeed();
   },[])
 
-
+  if (!feed) return null; // Return null if feed is not yet loaded
+  if (feed.length === 0) return <h1>No users found!</h1>;
 
   return (
     feed&&(
